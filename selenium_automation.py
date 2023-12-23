@@ -80,7 +80,10 @@ def search_images_and_extract_urls_bing(driver, image_folder, csv_writer):
 
         except TimeoutException:
             logging.error(f"Timeout for {image_path}: No element found to right-click. Writing 'no source available'.")
-            
+
+            # Additional logging to help diagnose the issue
+            logging.debug(driver.page_source)
+
             # Switch to Google and perform the search again
             search_images_and_extract_urls_google(driver, image_folder, csv_writer, image_path)
 
