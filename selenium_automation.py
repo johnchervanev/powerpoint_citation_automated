@@ -149,6 +149,7 @@ def main():
     driver_path = os.path.join(current_directory, 'chromedriver')
 
     chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')  # Add this line for headless mode
 
     driver = webdriver.Chrome(service=ChromeService(executable_path=driver_path), options=chrome_options)
 

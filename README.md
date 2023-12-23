@@ -54,7 +54,7 @@ pip install -r requirements.txt
 ```
 
 ## Download and Set Up External Tools:
-For Selenium, ensure ChromeDriver is installed or use chromedriver-autoinstaller as specified in requirements.txt.
+For Selenium, ensure ChromeDriver and the Google Chrome is installed 
 
 ## Run the Main Script:
 
