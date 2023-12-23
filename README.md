@@ -1,4 +1,4 @@
-# PowerPoint Automation Project
+# PowerPoint Automation
 
 Automate extraction of images from a PowerPoint presentation, perform reverse image searches, and add URLs as footers to slides.
 
@@ -69,7 +69,7 @@ See requirements.txt for Python packages.
 
 ## Usage
 
-Place the PowerPoint file to be processed in the root directory. Run the main_script.py script to automate the image extraction, URL extraction, and adding URLs as footers to slides.
+Run the main_script.py script to automate the image extraction, URL extraction, and adding URLs as footers to slides.
 
 ## Scripts
 
