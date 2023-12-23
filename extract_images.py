@@ -1,11 +1,13 @@
 import os
 from pptx import Presentation
-from PIL import Image
+from PIL import Image, ImageTk, ImageFile
 from io import BytesIO
 from tkinter import filedialog, Tk
 
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+
 def convert_to_rgb(image):
-    if image.mode == "RGBA":
+    if image.mode in ("RGBA", "P"):
         return image.convert("RGB")
     return image
 
