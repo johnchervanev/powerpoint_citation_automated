@@ -1,4 +1,4 @@
-# PowerPoint Automation Project
+# PowerPoint Automation
 
 Automate extraction of images from a PowerPoint presentation, perform reverse image searches, and add URLs as footers to slides.
 
