@@ -1,6 +1,6 @@
 # requirements.txt
 
 # Python packages
-python-pptx==0.6.19
-Pillow==9.0.0
-selenium==4.1.0
+python-pptx
+Pillow
+selenium

@@ -10,7 +10,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
 # Constants
-DRIVER_PATH = '/Users/johnchervanev/Downloads/applications/chromedriver120/chromedriver'
 CSV_FILE_NAME = 'urls.csv'
 OUTPUT_IMAGES_FOLDER = 'output_images'
 TIMEOUT = 3
@@ -52,7 +51,7 @@ def search_images_and_extract_urls_bing(driver, image_folder, csv_writer):
 
     for image_path in image_paths:
         file_input = wait_for_element(driver, By.CSS_SELECTOR, "input[type='file']")
-        time.sleep(5)  # Adjust the sleep time if needed
+        time.sleep(5)
         file_input.send_keys(image_path)
         time.sleep(3)
 
@@ -146,9 +145,12 @@ def main():
     current_directory = os.path.dirname(os.path.realpath(__file__))
     csv_file_path = os.path.join(current_directory, CSV_FILE_NAME)
 
+    # Construct the path to ChromeDriver in the same directory as the script
+    driver_path = os.path.join(current_directory, 'chromedriver')
+
     chrome_options = webdriver.ChromeOptions()
 
-    driver = webdriver.Chrome(service=ChromeService(executable_path=DRIVER_PATH), options=chrome_options)
+    driver = webdriver.Chrome(service=ChromeService(executable_path=driver_path), options=chrome_options)
 
     try:
         IMAGE_FOLDER = os.path.join(current_directory, OUTPUT_IMAGES_FOLDER)
