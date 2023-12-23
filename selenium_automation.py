@@ -13,12 +13,18 @@ from selenium.common.exceptions import TimeoutException, WebDriverException, Ele
 CONFIG = {
     'CSV_FILE_NAME': 'urls.csv',
     'OUTPUT_IMAGES_FOLDER': 'output_images',
-    'TIMEOUT': 3,
-    'RETRIES': 1
+    'TIMEOUT': 10,
+    'RETRIES': 2
 }
 
 # Set up logging
 logging.basicConfig(filename='script_log.txt', level=logging.ERROR)
+
+# Add this function to wait for the document.readyState to be complete
+def wait_for_page_to_load(driver, timeout=CONFIG['TIMEOUT']):
+    WebDriverWait(driver, timeout).until(
+        lambda x: x.execute_script("return document.readyState === 'complete'")
+    )
 
 def wait_for_element(driver, by, value, timeout=CONFIG['TIMEOUT'], refresh_on_timeout=False):
     for _ in range(CONFIG['RETRIES']):
@@ -40,6 +46,7 @@ def wait_for_element(driver, by, value, timeout=CONFIG['TIMEOUT'], refresh_on_ti
 
 def search_images_and_extract_urls_bing(driver, image_folder, csv_writer):
     driver.get("https://www.bing.com/")
+    wait_for_page_to_load(driver)
     time.sleep(2)
 
     try:
@@ -82,6 +89,7 @@ def search_images_and_extract_urls_bing(driver, image_folder, csv_writer):
 
         finally:
             driver.get("https://www.bing.com/")
+            wait_for_page_to_load(driver)
             time.sleep(2)
 
             try:
@@ -95,6 +103,7 @@ def search_images_and_extract_urls_bing(driver, image_folder, csv_writer):
 
 def search_images_and_extract_urls_google(driver, image_folder, csv_writer, current_image_path):
     driver.get("https://www.google.com/imghp")
+    wait_for_page_to_load(driver)
     time.sleep(2)
 
     try:
@@ -136,6 +145,7 @@ def search_images_and_extract_urls_google(driver, image_folder, csv_writer, curr
 
     finally:
         driver.get("https://www.google.com/imghp")
+        wait_for_page_to_load(driver)
         time.sleep(2)
 
         try:
@@ -158,6 +168,9 @@ def main():
 
     try:
         with webdriver.Chrome(service=ChromeService(executable_path=driver_path), options=chrome_options) as driver:
+            # Wait for the page to load before proceeding
+            wait_for_page_to_load(driver)
+
             IMAGE_FOLDER = os.path.join(current_directory, CONFIG['OUTPUT_IMAGES_FOLDER'])
 
             if os.path.exists(IMAGE_FOLDER) and os.path.isdir(IMAGE_FOLDER):
