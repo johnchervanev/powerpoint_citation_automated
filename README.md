@@ -25,7 +25,7 @@ Automate extraction of images from a PowerPoint presentation, perform reverse im
 Clone the Repository:
 
 ```bash
-git clone https://github.com/your-username/powerpoint-automation.git
+git clone https://github.com/your-username/powerpoint_citation_automated.git
 cd powerpoint-automation
 ```
 
