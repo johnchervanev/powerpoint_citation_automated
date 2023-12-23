@@ -10,7 +10,12 @@ def run_scripts():
     input_pptx = choose_file()
     script_directory = os.path.dirname(os.path.abspath(__file__))
     output_images_folder = os.path.join(script_directory, "output_images")
-    extract_images_from_pptx(input_pptx, output_images_folder)
+    
+    # Use the name of the PowerPoint file as the template
+    template = os.path.splitext(os.path.basename(input_pptx))[0]
+
+    # Extract images from PowerPoint and mark slide numbers
+    extract_images_from_pptx(input_pptx, output_images_folder, template)
 
     # Script 2
     search_images_and_extract_urls()
@@ -27,3 +32,4 @@ def run_scripts():
 
 if __name__ == "__main__":
     run_scripts()
+
