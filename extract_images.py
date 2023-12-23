@@ -1,10 +1,14 @@
 import os
+import logging
 from pptx import Presentation
-from PIL import Image, ImageTk, ImageFile
+from PIL import Image, ImageFile
 from io import BytesIO
 from tkinter import filedialog, Tk
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def convert_to_rgb(image):
     if image.mode in ("RGBA", "P"):
@@ -23,7 +27,7 @@ def process_image(image, output_folder, slide_number, image_count, template):
 
             return True
     except Exception as e:
-        print(f"Error processing image: {e}")
+        logger.error(f"Error processing image on slide {slide_number}, shape {image_count + 1}: {e}")
         return False
 
 def extract_and_process_images(presentation, output_folder, template):
@@ -38,16 +42,19 @@ def extract_and_process_images(presentation, output_folder, template):
     return image_count
 
 def extract_images_from_pptx(input_pptx, output_folder, template):
-    # Load the PowerPoint presentation
-    presentation = Presentation(input_pptx)
+    try:
+        # Load the PowerPoint presentation
+        presentation = Presentation(input_pptx)
 
-    # Create the output folder if it doesn't exist
-    os.makedirs(output_folder, exist_ok=True)
+        # Create the output folder if it doesn't exist
+        os.makedirs(output_folder, exist_ok=True)
 
-    # Extract and process images
-    image_count = extract_and_process_images(presentation, output_folder, template)
+        # Extract and process images
+        image_count = extract_and_process_images(presentation, output_folder, template)
 
-    print(f"{image_count} images extracted from the PowerPoint presentation.")
+        logger.info(f"{image_count} images extracted from the PowerPoint presentation.")
+    except Exception as e:
+        logger.error(f"Error extracting images from PowerPoint: {e}")
 
 def choose_file():
     Tk().withdraw()  # Hide the main window
@@ -55,15 +62,18 @@ def choose_file():
     return file_path
 
 if __name__ == "__main__":
-    # Choose the input PowerPoint file interactively
-    input_pptx = choose_file()
+    try:
+        # Choose the input PowerPoint file interactively
+        input_pptx = choose_file()
 
-    # Set the output folder to the directory of the script
-    script_directory = os.path.dirname(os.path.abspath(__file__))
-    output_folder = os.path.join(script_directory, "output_images")
+        # Set the output folder to the directory of the script
+        script_directory = os.path.dirname(os.path.abspath(__file__))
+        output_folder = os.path.join(script_directory, "output_images")
 
-    # Use the name of the PowerPoint file as the template
-    template = os.path.splitext(os.path.basename(input_pptx))[0]
+        # Use the name of the PowerPoint file as the template
+        template = os.path.splitext(os.path.basename(input_pptx))[0]
 
-    # Extract images from PowerPoint and mark slide numbers
-    extract_images_from_pptx(input_pptx, output_folder, template)
+        # Extract images from PowerPoint and mark slide numbers
+        extract_images_from_pptx(input_pptx, output_folder, template)
+    except KeyboardInterrupt:
+        logger.info("Script execution interrupted by user.")
