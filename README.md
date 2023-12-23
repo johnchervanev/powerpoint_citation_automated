@@ -26,7 +26,7 @@ Clone the Repository:
 
 ```bash
 git clone https://github.com/your-username/powerpoint_citation_automated.git
-cd powerpoint-automation
+cd powerpoint_citation_automated
 ```
 
 ## Create a Virtual Environment:
