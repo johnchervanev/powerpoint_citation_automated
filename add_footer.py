@@ -6,14 +6,23 @@ from pptx.util import Inches, Pt
 from tkinter import Tk, filedialog
 
 def create_textbox(slide, left, top, width, height):
+    """
+    Create and return a text frame inside a textbox on the slide.
+    """
     textbox = slide.shapes.add_textbox(left, top, width, height)
     return textbox.text_frame
 
-def customize_paragraph(p):
-    p.font.size = Pt(7)
-    p.alignment = 2  # Right-aligned (adjust as needed)
+def customize_paragraph(p, font_size=7, alignment=2):
+    """
+    Customize the paragraph with the specified font size and alignment.
+    """
+    p.font.size = Pt(font_size)
+    p.alignment = alignment
 
 def add_footer_to_slide(slide, urls, presentation):
+    """
+    Add a footer to the slide containing the provided URLs.
+    """
     slide_width = presentation.slide_width
     slide_height = presentation.slide_height
     left = Inches(0.5)
@@ -30,6 +39,9 @@ def add_footer_to_slide(slide, urls, presentation):
     customize_paragraph(p)
 
 def read_csv(csv_file):
+    """
+    Read data from the CSV file and organize it by slide number.
+    """
     data = {}
     with open(csv_file, newline='', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
@@ -44,6 +56,10 @@ def read_csv(csv_file):
     return data
 
 def add_footer_to_slides(input_pptx, output_folder, csv_file):
+    """
+    Add footers containing URLs to slides based on the CSV data.
+    Save the modified presentation to the output folder.
+    """
     presentation = Presentation(input_pptx)
     data = read_csv(csv_file)
 
