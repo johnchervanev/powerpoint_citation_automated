@@ -188,6 +188,10 @@ def main():
                 with open(csv_file_path, 'w', newline='') as csv_file:
                     csv_writer = csv.writer(csv_file)
                     search_images_and_extract_urls_bing(driver, IMAGE_FOLDER, csv_writer)
+
+                # All images processed
+                logger.info("All images have been processed.")
+
             else:
                 logger.error(f"The '{CONFIG['OUTPUT_IMAGES_FOLDER']}' directory is missing. Please run the script to create it.")
     except WebDriverException as wde:
