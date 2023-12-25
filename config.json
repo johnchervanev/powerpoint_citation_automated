@@ -1,0 +1,6 @@
+{
+    "CSV_FILE_NAME": "urls.csv",
+    "OUTPUT_IMAGES_FOLDER": "output_images",
+    "TIMEOUT": 10,
+    "RETRIES": 2
+  }

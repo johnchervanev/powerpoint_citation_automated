@@ -1,47 +1,23 @@
-# File: main_script.py
-import os
-from extract_images import extract_images_from_pptx, choose_file
-from selenium_automation import main as search_images_and_extract_urls
-from add_footer import add_footer_to_slides
-from tkinter import Tk, filedialog
+import subprocess
+import sys
 
-def run_scripts():
-    # Script 1
+def run_script(script_name):
     try:
-        input_pptx = choose_file()
-        if not input_pptx:
-            print("File selection canceled. Exiting script.")
-            return
-
-        script_directory = os.path.dirname(os.path.abspath(__file__))
-        output_images_folder = os.path.join(script_directory, "output_images")
-        
-        # Use the name of the PowerPoint file as the template
-        template = os.path.splitext(os.path.basename(input_pptx))[0]
-
-        # Extract images from PowerPoint and mark slide numbers
-        extract_images_from_pptx(input_pptx, output_images_folder, template)
+        subprocess.call([sys.executable, script_name])
     except Exception as e:
-        print(f"Error in Script 1: {e}")
-
-    # Script 2
-    try:
-        search_images_and_extract_urls()
-    except Exception as e:
-        print(f"Error in Script 2: {e}")
-
-    # Script 3
-    try:
-        csv_file = os.path.join(script_directory, "urls.csv")
-        output_pptx_folder = os.path.join(script_directory, "output_pptx")
-
-        # Create the output PowerPoint folder if it doesn't exist
-        if not os.path.exists(output_pptx_folder):
-            os.makedirs(output_pptx_folder)
-
-        add_footer_to_slides(input_pptx, output_pptx_folder, csv_file)
-    except Exception as e:
-        print(f"Error in Script 3: {e}")
+        print("Error running {}: {}".format(script_name, e))
 
 if __name__ == "__main__":
-    run_scripts()
+    # Run extract_images.py
+    print("Running extract_images.py...")
+    run_script("extract_images.py")
+
+    # Run selenium_automation.py
+    print("Running selenium_automation.py...")
+    run_script("selenium_automation.py")
+
+    # Run add_footer.py
+    print("Running add_footer.py...")
+    run_script("add_footer.py")
+
+    print("All scripts executed successfully.")

@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, WebDriverException, ElementClickInterceptedException
+from selenium.common.exceptions import TimeoutException, WebDriverException
 
 # Additional Constants
 CONFIG_FILE_PATH = 'config.json'
@@ -17,6 +17,7 @@ CONFIG_FILE_PATH = 'config.json'
 try:
     with open(CONFIG_FILE_PATH, 'r') as config_file:
         CONFIG = json.load(config_file)
+        output_directory = CONFIG.get('OUTPUT_DIRECTORY')
 except FileNotFoundError:
     # Provide default values if the configuration file is missing
     CONFIG = {
@@ -25,9 +26,10 @@ except FileNotFoundError:
         'TIMEOUT': 10,
         'RETRIES': 2
     }
+    output_directory = None
 
 # Set up logging
-logging.basicConfig(filename='script_log.txt', level=logging.WARNING)
+logging.basicConfig(filename='script_log.txt', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def wait_for_page_to_load(driver, timeout=CONFIG['TIMEOUT']):
@@ -164,7 +166,9 @@ def search_images_and_extract_urls_google(driver, image_folder, csv_writer, curr
 
 def main():
     current_directory = os.path.dirname(os.path.realpath(__file__))
-    csv_file_path = os.path.join(current_directory, CONFIG['CSV_FILE_NAME'])
+    dynamic_directory = CONFIG.get('OUTPUT_IMAGES_FOLDER', 'default_dynamic_directory')
+    csv_file_path = os.path.join(current_directory, dynamic_directory, '..', CONFIG['CSV_FILE_NAME'])
+
 
     # Construct the path to ChromeDriver in the same directory as the script
     driver_path = os.path.join(current_directory, 'chromedriver')
@@ -176,7 +180,7 @@ def main():
             # Wait for the page to load before proceeding
             wait_for_page_to_load(driver)
 
-            IMAGE_FOLDER = os.path.join(current_directory, CONFIG['OUTPUT_IMAGES_FOLDER'])
+            IMAGE_FOLDER = os.path.join(current_directory, dynamic_directory)
 
             if os.path.exists(IMAGE_FOLDER) and os.path.isdir(IMAGE_FOLDER):
                 if os.path.exists(csv_file_path):
@@ -193,7 +197,7 @@ def main():
                 logger.info("All images have been processed.")
 
             else:
-                logger.error(f"The '{CONFIG['OUTPUT_IMAGES_FOLDER']}' directory is missing. Please run the script to create it.")
+                logger.error(f"The '{dynamic_directory}' directory is missing. Please run the script to create it.")
     except WebDriverException as wde:
         logger.error(f"WebDriverException occurred: {wde}")
     except Exception as e:

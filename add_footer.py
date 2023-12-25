@@ -4,6 +4,21 @@ import re
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from tkinter import Tk, filedialog
+import json
+
+# Include the following import for CONFIG
+CONFIG_FILE_PATH = 'config.json'
+
+try:
+    with open(CONFIG_FILE_PATH, 'r') as config_file:
+        CONFIG = json.load(config_file)
+except FileNotFoundError:
+    CONFIG = {
+        'CSV_FILE_NAME': 'urls.csv',
+        'OUTPUT_IMAGES_FOLDER': 'output_images',
+        'TIMEOUT': 10,
+        'RETRIES': 2
+    }
 
 def create_textbox(slide, left, top, width, height):
     """
@@ -63,6 +78,10 @@ def add_footer_to_slides(input_pptx, output_folder, csv_file):
     presentation = Presentation(input_pptx)
     data = read_csv(csv_file)
 
+    # Update the following line to use the parent directory of dynamic_directory
+    parent_directory = os.path.dirname(dynamic_directory)
+    output_folder = os.path.join(parent_directory, "output_pptx")
+
     for i, slide in enumerate(presentation.slides):
         if i + 1 in data:
             urls = data[i + 1]
@@ -75,16 +94,25 @@ def add_footer_to_slides(input_pptx, output_folder, csv_file):
     presentation.save(output_path)
 
 if __name__ == "__main__":
-    Tk().withdraw()
-    input_pptx = filedialog.askopenfilename(title="Select PowerPoint file", filetypes=[("PowerPoint files", "*.pptx")])
+    dynamic_directory = CONFIG.get('OUTPUT_IMAGES_FOLDER', 'default_dynamic_directory')
 
-    # Set the output folder to the main directory
-    script_directory = os.path.dirname(os.path.abspath(__file__))
-    output_folder = os.path.join(script_directory, "output_pptx")
+    # Define parent_directory based on dynamic_directory
+    parent_directory = os.path.dirname(dynamic_directory)
 
-    # Create the output folder if it doesn't exist
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+    try:
+        # Detect PowerPoint file dynamically in the "input_pptx" folder
+        input_pptx_folder = os.path.join(parent_directory, "input_pptx")
+        pptx_files = [file for file in os.listdir(input_pptx_folder) if file.endswith('.pptx')]
+        
+        if not pptx_files:
+            print("Error: No PowerPoint files found in the 'input_pptx' folder.")
+        else:
+            # Use the first found PowerPoint file
+            input_pptx = os.path.join(input_pptx_folder, pptx_files[0])
 
-    csv_file = os.path.join(script_directory, "urls.csv")
-    add_footer_to_slides(input_pptx, output_folder, csv_file)
+            # Use the correct path for csv_file
+            csv_file = os.path.join(parent_directory, CONFIG['CSV_FILE_NAME'])
+
+            add_footer_to_slides(input_pptx, dynamic_directory, csv_file)
+    except Exception as e:
+        print(f"Error in Script 3: {e}")
