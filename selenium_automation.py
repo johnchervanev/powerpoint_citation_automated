@@ -177,6 +177,9 @@ def main():
 
     try:
         with webdriver.Chrome(service=ChromeService(executable_path=driver_path), options=chrome_options) as driver:
+            # Maximize the browser window
+            driver.maximize_window()
+            
             # Wait for the page to load before proceeding
             wait_for_page_to_load(driver)
 
