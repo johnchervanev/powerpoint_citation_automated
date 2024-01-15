@@ -3,22 +3,20 @@
 Automate extraction of images from a PowerPoint presentation, perform reverse image searches, and add URLs as footers to slides.
 
 ## Table of Contents
-- [Setup](#setup)
-  - [Clone the Repository](#clone-the-repository)
+
+- [PowerPoint Automation](#powerpoint-automation)
+  - [Table of Contents](#table-of-contents)
+  - [Setup](#setup)
   - [Create a Virtual Environment](#create-a-virtual-environment)
   - [Activate the Virtual Environment](#activate-the-virtual-environment)
   - [Install Dependencies](#install-dependencies)
   - [Download and Set Up External Tools](#download-and-set-up-external-tools)
   - [Run the Main Script](#run-the-main-script)
-- [Dependencies](#dependencies)
-- [Usage](#usage)
-- [Scripts](#scripts)
-  - [extract_images.py](#extract_imagespy)
-  - [selenium_automation.py](#selenium_automationpy)
-  - [add_footer.py](#add_footerpy)
-  - [main_script.py](#main_scriptpy)
-- [Contributing](#contributing)
-- [License](#license)
+  - [Dependencies](#dependencies)
+  - [Usage](#usage)
+  - [Scripts](#scripts)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Setup
 
@@ -29,34 +27,37 @@ git clone https://github.com/your-username/powerpoint_citation_automated.git
 cd powerpoint_citation_automated
 ```
 
-## Create a Virtual Environment:
+## Create a Virtual Environment
 
 ```bash
 python -m venv venv
 ```
 
-## Activate the Virtual Environment:
+## Activate the Virtual Environment
+
 On Windows:
 
 ```bash
 .\venv\Scripts\activate
 ```
+
 On macOS/Linux:
 
 ```bash
 source venv/bin/activate
 ```
 
-## Install Dependencies:
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Download and Set Up External Tools:
-For Selenium, ensure ChromeDriver and the Google Chrome is installed 
+## Download and Set Up External Tools
 
-## Run the Main Script:
+For Selenium, ensure ChromeDriver and the Google Chrome is installed
+
+## Run the Main Script
 
 ```bash
 python main_script.py
@@ -83,4 +84,5 @@ Run the main_script.py script to automate the image extraction, URL extraction, 
 Feel free to contribute by submitting issues, feature requests, or pull requests.
 
 ## License
+
 This project is licensed under the MIT License - see the LICENSE file for details.
